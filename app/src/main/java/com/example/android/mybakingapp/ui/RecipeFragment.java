@@ -48,9 +48,9 @@ public class RecipeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_recipe, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_recipe);
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_recipe);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
@@ -111,6 +111,6 @@ public class RecipeFragment extends Fragment {
         });
 
 
-        return view;
+        return rootView;
     }
 }

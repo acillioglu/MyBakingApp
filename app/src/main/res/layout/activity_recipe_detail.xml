@@ -4,6 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RecipeDetailActivity">
+    tools:context=".ui.RecipeDetailActivity"
+    android:id="@+id/fragment_recipe_detail">
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.android.mybakingapp.ui.RecipeDetailMasterFragment"/>
+
+
+
+
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>
