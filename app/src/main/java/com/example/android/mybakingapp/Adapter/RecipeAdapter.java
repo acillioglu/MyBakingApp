@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -61,15 +62,27 @@ public class RecipeAdapter extends RecyclerView.Adapter {
         public ListviewHolder(View itemView) {
             super(itemView);
             mItemTextView = (TextView) itemView.findViewById(R.id.txt_recipe_name);
-          //  mItemImage = (ImageView) itemView.findViewById(R.id.itemImage);
+            mItemImage = (ImageView) itemView.findViewById(R.id.imv_recipe_image);
             itemView.setOnClickListener(this);
 
         }
 
         public void bindView(int position) {
 
+            if (recipeLists.get(position).getImage() != "") {
 
-           // mItemImage.setImageResource(BakingPics.picturePath[position]);
+                Picasso.get()
+                        .load(recipeLists.get(position).getImage())
+                        .placeholder(R.color.colorAccent)
+                        .error(R.color.colorAccent)
+                        .into(mItemImage);
+
+            }
+
+
+
+
+
             mItemTextView.setText(recipeLists.get(position).getName());
 
 
