@@ -1,6 +1,8 @@
 package com.example.android.mybakingapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -62,6 +64,17 @@ public class RecipeFragment extends Fragment {
                 Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
 
                 List<Ingredient> ıngredients = mRecipeLists.get(position).getIngredients();
+
+
+                Bundle bundle = new Bundle();
+
+                ArrayList<RecipeList> selectedRecipe = new ArrayList<>();
+                selectedRecipe.add(mRecipeLists.get(position));
+                bundle.putParcelableArrayList("sallama", selectedRecipe);
+                Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
 
 
             }
