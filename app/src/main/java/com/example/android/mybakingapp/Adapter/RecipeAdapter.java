@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.R;
@@ -24,10 +25,17 @@ public class RecipeAdapter extends RecyclerView.Adapter {
 
     private ArrayList<RecipeList> recipeLists;
 
+    private RecipeAdapterListener mListener;
 
-    public RecipeAdapter(Context context, ArrayList<RecipeList> mRecipeLists) {
+    public interface RecipeAdapterListener {
+        void onClick(View view, int position);
+    }
+
+
+    public RecipeAdapter(Context context, ArrayList<RecipeList> mRecipeLists, RecipeAdapterListener mListener) {
         this.recipeLists = mRecipeLists;
         this.context = context;
+        this.mListener = mListener;
 
     }
 
@@ -36,7 +44,7 @@ public class RecipeAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe_list, parent, false);
-        return new ListviewHolder(view);
+        return new ListviewHolder(view, mListener);
     }
 
     @Override
@@ -59,17 +67,20 @@ public class RecipeAdapter extends RecyclerView.Adapter {
         private ImageView mItemImage;
 
 
-        public ListviewHolder(View itemView) {
+        public ListviewHolder(View itemView, RecipeAdapterListener listener) {
             super(itemView);
             mItemTextView = (TextView) itemView.findViewById(R.id.txt_recipe_name);
             mItemImage = (ImageView) itemView.findViewById(R.id.imv_recipe_image);
+            mListener = listener;
             itemView.setOnClickListener(this);
+
 
         }
 
         public void bindView(int position) {
 
-            if (recipeLists.get(position).getImage() != "") {
+            if (recipeLists.get(position).getImage() != null && !recipeLists.get(position).getImage().isEmpty()) {
+
 
                 Picasso.get()
                         .load(recipeLists.get(position).getImage())
@@ -78,9 +89,6 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                         .into(mItemImage);
 
             }
-
-
-
 
 
             mItemTextView.setText(recipeLists.get(position).getName());
@@ -92,10 +100,15 @@ public class RecipeAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View view) {
 
+            int pos = getAdapterPosition();
+
+            if (pos != RecyclerView.NO_POSITION) {
+                mListener.onClick(view, pos);
+            }
+
 
         }
     }
-
 
 
 }

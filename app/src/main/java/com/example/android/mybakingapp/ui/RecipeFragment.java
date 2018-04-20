@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.example.android.mybakingapp.Adapter.RecipeAdapter;
+import com.example.android.mybakingapp.Model.Ingredient;
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Network.BakingApi;
 import com.example.android.mybakingapp.Network.RetrofitBuilder;
@@ -20,6 +22,7 @@ import com.example.android.mybakingapp.R;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import retrofit2.Call;
@@ -49,8 +52,25 @@ public class RecipeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
+        final RecipeAdapter.RecipeAdapterListener listener = new RecipeAdapter.RecipeAdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+
+                //  Toast.makeText(getContext(), mRecipeLists.get(position).getName(), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+
+                List<Ingredient> ıngredients = mRecipeLists.get(position).getIngredients();
+
+
+            }
+        };
+
+
         BakingApi bakingApi = RetrofitBuilder.Retrieve();
         Call<ArrayList<RecipeList>> baking = bakingApi.getRecipeList();
+
 
         baking.enqueue(new Callback<ArrayList<RecipeList>>() {
             @Override
@@ -61,7 +81,7 @@ public class RecipeFragment extends Fragment {
 
                     mRecipeLists = response.body();
 
-                    RecipeAdapter listAdapter = new RecipeAdapter(getContext(), mRecipeLists);
+                    RecipeAdapter listAdapter = new RecipeAdapter(getContext(), mRecipeLists, listener);
                     recyclerView.setAdapter(listAdapter);
 
 
