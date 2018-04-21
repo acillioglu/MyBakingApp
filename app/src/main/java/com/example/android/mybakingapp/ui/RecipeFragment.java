@@ -59,9 +59,9 @@ public class RecipeFragment extends Fragment {
             public void onClick(View view, int position) {
 
 
-                //  Toast.makeText(getContext(), mRecipeLists.get(position).getName(), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+
+             //   Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
 
                 List<Ingredient> ıngredients = mRecipeLists.get(position).getIngredients();
 
