@@ -4,6 +4,7 @@ package com.example.android.mybakingapp.ui;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Model.Step;
@@ -16,6 +17,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private List<Step> steps;
     List<RecipeList> recipeLists;
+    private boolean mTwoPane;
 
 
     @Override
@@ -23,6 +25,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+
+        if (findViewById(R.id.sw600_linear_layout) != null) {
+            mTwoPane = true;
+        } else {
+            mTwoPane  = false;
+
+        }
 
 
 
@@ -36,10 +45,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
 
         steps = recipeLists.get(0).getSteps();
-
-
-
-
 
 
 
