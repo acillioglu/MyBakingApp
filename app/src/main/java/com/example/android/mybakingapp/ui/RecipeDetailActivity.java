@@ -5,7 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import com.example.android.mybakingapp.Adapter.StepsAdapter;
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Model.Step;
 import com.example.android.mybakingapp.R;
@@ -29,10 +32,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (findViewById(R.id.sw600_linear_layout) != null) {
             mTwoPane = true;
         } else {
-            mTwoPane  = false;
+            mTwoPane = false;
 
         }
-
 
 
         Bundle bundle = getIntent().getExtras();
@@ -45,7 +47,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
 
         steps = recipeLists.get(0).getSteps();
-
 
 
         RecipeDetailMasterFragment recipeDetailMasterFragment = new RecipeDetailMasterFragment();

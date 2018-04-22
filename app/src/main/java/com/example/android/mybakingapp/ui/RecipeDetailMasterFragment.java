@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.example.android.mybakingapp.Adapter.RecipeAdapter;
@@ -20,8 +21,6 @@ import com.example.android.mybakingapp.Adapter.StepsAdapter;
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Model.Step;
 import com.example.android.mybakingapp.R;
-
-
 
 
 import java.util.ArrayList;
@@ -36,8 +35,6 @@ public class RecipeDetailMasterFragment extends Fragment {
     List<Step> stepList;
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,17 +47,17 @@ public class RecipeDetailMasterFragment extends Fragment {
         getActivity().setTitle(recipeLists.get(0).getName());
 
 
-       ArrayList<Step> steps = new ArrayList<>();
+        ArrayList<Step> steps = new ArrayList<>();
 
 
-
-            steps.addAll(recipeLists.get(0).getSteps());
-
+        steps.addAll(recipeLists.get(0).getSteps());
 
 
         final StepsAdapter.StepsAdapterListener listener = new StepsAdapter.StepsAdapterListener() {
             @Override
             public void onClick(View view, int position) {
+
+               // Toast.makeText(getContext(), "tiklanan " + position, Toast.LENGTH_SHORT).show();
 
             }
         };
@@ -69,27 +66,15 @@ public class RecipeDetailMasterFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_stepsShortDes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        StepsAdapter stepsAdapter = new StepsAdapter(getContext(),steps, listener );
+        StepsAdapter stepsAdapter = new StepsAdapter(getContext(), steps, listener);
 
         recyclerView.setAdapter(stepsAdapter);
-
-
-
-
-
 
 
         return rootView;
 
 
     }
-
-
-
-
-
-
-
 
 
 }
