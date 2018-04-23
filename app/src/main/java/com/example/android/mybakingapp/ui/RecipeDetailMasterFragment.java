@@ -35,6 +35,14 @@ public class RecipeDetailMasterFragment extends Fragment {
     List<Step> stepList;
 
 
+    interface MyItemClick {
+
+        public void onItemClick(int position);
+    }
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,6 +64,9 @@ public class RecipeDetailMasterFragment extends Fragment {
         final StepsAdapter.StepsAdapterListener listener = new StepsAdapter.StepsAdapterListener() {
             @Override
             public void onClick(View view, int position) {
+
+               MyItemClick myItemClick = (MyItemClick) getActivity();
+               myItemClick.onItemClick(position);
 
                // Toast.makeText(getContext(), "tiklanan " + position, Toast.LENGTH_SHORT).show();
 

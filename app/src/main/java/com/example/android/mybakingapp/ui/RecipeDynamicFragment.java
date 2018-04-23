@@ -7,13 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.android.mybakingapp.R;
 
 public class RecipeDynamicFragment extends Fragment{
 
-    public RecipeDynamicFragment(){
 
+
+    public RecipeDynamicFragment(){
 
     }
 
@@ -22,6 +24,9 @@ public class RecipeDynamicFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_dynamic, container, false);
+
+
+
 
 
 
