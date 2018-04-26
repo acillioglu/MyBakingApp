@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.example.android.mybakingapp.Adapter.IngredientAdapter;
 import com.example.android.mybakingapp.Adapter.RecipeAdapter;
 import com.example.android.mybakingapp.Adapter.StepsAdapter;
+import com.example.android.mybakingapp.Model.Ingredient;
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Model.Step;
 import com.example.android.mybakingapp.R;
@@ -56,9 +58,11 @@ public class RecipeDetailMasterFragment extends Fragment {
 
 
         ArrayList<Step> steps = new ArrayList<>();
-
-
         steps.addAll(recipeLists.get(0).getSteps());
+
+        ArrayList<Ingredient> ıngredients = new ArrayList<>();
+        ıngredients.addAll(recipeLists.get(0).getIngredients());
+
 
 
         final StepsAdapter.StepsAdapterListener listener = new StepsAdapter.StepsAdapterListener() {
@@ -74,7 +78,17 @@ public class RecipeDetailMasterFragment extends Fragment {
         };
 
 
+        RecyclerView recyclerIng = (RecyclerView) rootView.findViewById(R.id.recyclerview_ingredients);
+        recyclerIng.setNestedScrollingEnabled(false);
+        recyclerIng.setLayoutManager(new LinearLayoutManager(getContext()));
+        IngredientAdapter ıngredientAdapter = new IngredientAdapter(getContext(), ıngredients);
+        recyclerIng.setAdapter(ıngredientAdapter);
+
+
+
+
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_stepsShortDes);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         StepsAdapter stepsAdapter = new StepsAdapter(getContext(), steps, listener);
