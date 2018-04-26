@@ -4,6 +4,7 @@ package com.example.android.mybakingapp.ui;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindBool;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailMasterFragment.MyItemClick, RecipeDynamicFragment.MyButtonClick {
@@ -33,6 +35,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     private static final String SIS_IS_DYNAMIC = "sis_is_dynamic";
 
     private final String TAG = getClass().getSimpleName();
+    private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
+    private static final String BUNDLE_KEY_POSITION = "bundle_key_position";
+    private static final String BUNDLE_KEY_SECOND_RECIPE = "bundle_key_second_recipe";
+
+
+
+    @BindView(R.id.toolbar_general)
+    Toolbar toolbar;
+
 
 
 
@@ -42,10 +53,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         setContentView(R.layout.activity_recipe_detail);
 
         ButterKnife.bind(this);
-
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         if (findViewById(R.id.sw600_linear_layout) != null) {
@@ -61,7 +68,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         if (bundle != null) {
 
-            recipeLists = bundle.getParcelableArrayList("sallama");
+            recipeLists = bundle.getParcelableArrayList(BUNDLE_KEY_RECIPE);
 
 
         }
@@ -70,13 +77,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
 
         RecipeDetailMasterFragment recipeDetailMasterFragment = new RecipeDetailMasterFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
 
 
         recipeDetailMasterFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
                 .replace(R.id.container_detail_fragment, recipeDetailMasterFragment)
+                .addToBackStack("recipe_detail")
                 .commit();
 
 
@@ -95,6 +103,28 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         }
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(recipeLists.get(0).getName());
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager mFragmentManager = getSupportFragmentManager();
+                if (mFragmentManager.getBackStackEntryCount() > 1) {
+
+                    fragmentManager.popBackStack("recipe_detail",0);
+
+                } else if (fragmentManager.getBackStackEntryCount() > 0) {
+                    finish();
+                }
+            }
+        });
+
+
+
 
     }
 
@@ -102,8 +132,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     @Override
     public void onItemClick(int position) {
 
-
-        //   Toast.makeText(this, "tiklanan : " + position, Toast.LENGTH_SHORT).show();
 
         RecipeDynamicFragment recipeDynamicFragment = new RecipeDynamicFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -113,8 +141,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         secondRecipe.addAll(recipeLists);
 
         Bundle bundleIng = new Bundle();
-        bundleIng.putParcelableArrayList("sallama2", secondRecipe);
-        bundleIng.putInt("sallamapozisyon", position);
+        bundleIng.putParcelableArrayList(BUNDLE_KEY_SECOND_RECIPE, secondRecipe);
+        bundleIng.putInt(BUNDLE_KEY_POSITION, position);
 
 
         recipeDynamicFragment.setArguments(bundleIng);
@@ -125,6 +153,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container_dynamic_fragment, recipeDynamicFragment)
+
                     .commit();
 
 
@@ -133,7 +162,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container_detail_fragment, recipeDynamicFragment)
-                    .addToBackStack("RECIPEDYNAMICFRAGMENT")
+                    .addToBackStack("step_detail")
                     .commit();
 
 
@@ -142,15 +171,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         mPosition = position;
         isDynamic = true;
 
-
-     /*   Bundle dynamicBundle = new Bundle();
-
-
-        ArrayList<Step> dynamicStep = new ArrayList<>();
-        dynamicStep.addAll(steps);
-        dynamicBundle.putParcelableArrayList("aa", dynamicStep);
-        recipeDynamicFragment.setArguments(dynamicBundle);
-        */
 
 
     }

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,8 +37,14 @@ import retrofit2.Retrofit;
 public class RecipeFragment extends Fragment {
 
     private static Retrofit retrofit = null;
+    private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
 
     private ArrayList<RecipeList> mRecipeLists;
+
+    @BindView(R.id.recyclerview_recipe)
+    RecyclerView recyclerView;
+
+
 
     public RecipeFragment() {
 
@@ -50,14 +58,14 @@ public class RecipeFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_recipe);
+        ButterKnife.bind(this,rootView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
         final RecipeAdapter.RecipeAdapterListener listener = new RecipeAdapter.RecipeAdapterListener() {
             @Override
             public void onClick(View view, int position) {
-
 
 
 
@@ -70,7 +78,7 @@ public class RecipeFragment extends Fragment {
 
                 ArrayList<RecipeList> selectedRecipe = new ArrayList<>();
                 selectedRecipe.add(mRecipeLists.get(position));
-                bundle.putParcelableArrayList("sallama", selectedRecipe);
+                bundle.putParcelableArrayList(BUNDLE_KEY_RECIPE, selectedRecipe);
                 Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
                 intent.putExtras(bundle);
 

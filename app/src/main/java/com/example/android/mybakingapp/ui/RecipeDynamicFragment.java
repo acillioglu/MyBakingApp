@@ -42,6 +42,8 @@ import butterknife.OnClick;
 public class RecipeDynamicFragment extends Fragment {
 
     private static final String SIS_PLAYER_POSITION = "sis_current_position";
+    private static final String BUNDLE_KEY_POSITION = "bundle_key_position";
+    private static final String BUNDLE_KEY_SECOND_RECIPE = "bundle_key_second_recipe";
     private List<RecipeList> recipeLists;
     private SimpleExoPlayer mExoPlayer;
     private String shortDescription;
@@ -54,6 +56,8 @@ public class RecipeDynamicFragment extends Fragment {
     private boolean playerStopped = false;
     private long playerStopPosition;
 
+    private int position = 0;
+
 
     @Nullable
     @BindView(R.id.simple_exoplayer_view)
@@ -61,12 +65,34 @@ public class RecipeDynamicFragment extends Fragment {
     @Nullable
     @BindView(R.id.txt_description)
     TextView textView;
-    @Nullable
-    @BindView(R.id.btn_next)
-    Button btnNext;
-    @Nullable
-    @BindView(R.id.btn_prev)
-    Button btnPrev;
+
+    @OnClick(R.id.btn_prev)
+    public void prevButton() {
+
+        if (recipeLists.get(0).getSteps().get(position).getId() > 0) {
+            if (mExoPlayer != null) {
+                mExoPlayer.stop();
+            }
+            MyButtonClick myButtonClick = (MyButtonClick) getActivity();
+            myButtonClick.onItemClick(position - 1);
+        }
+    }
+
+
+    @OnClick(R.id.btn_next)
+    public void nextButton() {
+
+        if (recipeLists.get(0).getSteps().get(position).getId() < recipeLists.get(0).getSteps().size() - 1) {
+            if (mExoPlayer != null) {
+                mExoPlayer.stop();
+            }
+
+            MyButtonClick myItemClick = (MyButtonClick) getActivity();
+            myItemClick.onItemClick(position + 1);
+
+
+        }
+    }
 
 
     public RecipeDynamicFragment() {
@@ -92,8 +118,8 @@ public class RecipeDynamicFragment extends Fragment {
         checkLandscape();
 
 
-        recipeLists = getArguments().getParcelableArrayList("sallama2");
-        final int position = getArguments().getInt("sallamapozisyon");
+        recipeLists = getArguments().getParcelableArrayList(BUNDLE_KEY_SECOND_RECIPE);
+        position = getArguments().getInt(BUNDLE_KEY_POSITION);
 
 
         shortDescription = recipeLists.get(0).getSteps().get(position).getShortDescription();
@@ -110,36 +136,6 @@ public class RecipeDynamicFragment extends Fragment {
             mMediaUri = Uri.parse(videoUrl);
             initializePlayer(mMediaUri);
         }
-
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (recipeLists.get(0).getSteps().get(position).getId() < recipeLists.get(0).getSteps().size() - 1) {
-                    if (mExoPlayer != null) {
-                        mExoPlayer.stop();
-                    }
-
-                    MyButtonClick myItemClick = (MyButtonClick) getActivity();
-                    myItemClick.onItemClick(position + 1);
-
-
-                }
-            }
-        });
-
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (recipeLists.get(0).getSteps().get(position).getId() > 0) {
-                    if (mExoPlayer != null) {
-                        mExoPlayer.stop();
-                    }
-                    MyButtonClick myButtonClick = (MyButtonClick) getActivity();
-                    myButtonClick.onItemClick(position - 1);
-                }
-            }
-        });
 
 
         return rootView;
@@ -167,16 +163,7 @@ public class RecipeDynamicFragment extends Fragment {
                 mExoPlayer.setPlayWhenReady(true);
 
 
-
-/*
-
-
-
-
-
-
-
-                mPlayerView.hideController();*/
+                // mPlayerView.hideController();
 
             } catch (Exception e) {
                 Log.e("aslankral", "exoplayer error" + e.toString());

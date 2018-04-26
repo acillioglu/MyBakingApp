@@ -12,6 +12,9 @@ import butterknife.ButterKnife;
 
 public class RecipeActivity extends AppCompatActivity {
 
+    @BindView(R.id.toolbar_general)
+    Toolbar toolbar;
+
 
 
 
@@ -22,7 +25,12 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
+        ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle("My Baking App");
 
 
 

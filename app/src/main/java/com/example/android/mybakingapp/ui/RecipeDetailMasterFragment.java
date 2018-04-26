@@ -29,12 +29,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeDetailMasterFragment extends Fragment {
 
 
     List<RecipeList> recipeLists;
 
-    List<Step> stepList;
+    private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
+
+    @BindView(R.id.recyclerview_ingredients)
+    RecyclerView recyclerIng;
+
+    @BindView(R.id.recyclerview_stepsShortDes)
+    RecyclerView recyclerStepsShortDes;
 
 
     interface MyItemClick {
@@ -44,15 +53,16 @@ public class RecipeDetailMasterFragment extends Fragment {
 
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail_master, container, false);
 
+        ButterKnife.bind(this,rootView);
 
-        recipeLists = getArguments().getParcelableArrayList("sallama");
+
+        recipeLists = getArguments().getParcelableArrayList(BUNDLE_KEY_RECIPE);
 
         getActivity().setTitle(recipeLists.get(0).getName());
 
@@ -64,21 +74,19 @@ public class RecipeDetailMasterFragment extends Fragment {
         ıngredients.addAll(recipeLists.get(0).getIngredients());
 
 
-
         final StepsAdapter.StepsAdapterListener listener = new StepsAdapter.StepsAdapterListener() {
             @Override
             public void onClick(View view, int position) {
 
-               MyItemClick myItemClick = (MyItemClick) getActivity();
-               myItemClick.onItemClick(position);
+                MyItemClick myItemClick = (MyItemClick) getActivity();
+                myItemClick.onItemClick(position);
 
-               // Toast.makeText(getContext(), "tiklanan " + position, Toast.LENGTH_SHORT).show();
 
             }
         };
 
 
-        RecyclerView recyclerIng = (RecyclerView) rootView.findViewById(R.id.recyclerview_ingredients);
+
         recyclerIng.setNestedScrollingEnabled(false);
         recyclerIng.setLayoutManager(new LinearLayoutManager(getContext()));
         IngredientAdapter ıngredientAdapter = new IngredientAdapter(getContext(), ıngredients);
@@ -86,14 +94,14 @@ public class RecipeDetailMasterFragment extends Fragment {
 
 
 
-
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_stepsShortDes);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        recyclerStepsShortDes.setNestedScrollingEnabled(false);
+        recyclerStepsShortDes.setLayoutManager(new LinearLayoutManager(getContext()));
         StepsAdapter stepsAdapter = new StepsAdapter(getContext(), steps, listener);
+        recyclerStepsShortDes.setAdapter(stepsAdapter);
 
-        recyclerView.setAdapter(stepsAdapter);
+
+
+
 
 
         return rootView;
