@@ -89,8 +89,9 @@ public class StepsAdapter extends RecyclerView.Adapter{
 
         public void bindView(int position) {
 
+            String shortDescription = stepArrayList.get(position).getShortDescription();
 
-        mShortDesTextView.setText(stepArrayList.get(position).getShortDescription());
+        mShortDesTextView.setText(position + " . " + shortDescription);
 
         }
 

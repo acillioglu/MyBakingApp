@@ -1,6 +1,7 @@
 package com.example.android.mybakingapp.ui;
 
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -135,6 +136,9 @@ public class RecipeDynamicFragment extends Fragment {
         if (videoUrl != null && !videoUrl.isEmpty()) {
             mMediaUri = Uri.parse(videoUrl);
             initializePlayer(mMediaUri);
+        } else {
+            mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.img_novide));
+
         }
 
 

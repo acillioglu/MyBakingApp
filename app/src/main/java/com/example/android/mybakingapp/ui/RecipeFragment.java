@@ -69,7 +69,6 @@ public class RecipeFragment extends Fragment {
 
 
 
-             //   Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
 
                 List<Ingredient> ıngredients = mRecipeLists.get(position).getIngredients();
 
@@ -119,6 +118,15 @@ public class RecipeFragment extends Fragment {
         });
 
 
+
+
+
         return rootView;
+
     }
+
+
+
+
+
 }
