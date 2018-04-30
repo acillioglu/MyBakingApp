@@ -1,8 +1,12 @@
 package com.example.android.mybakingapp.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +25,9 @@ import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Network.BakingApi;
 import com.example.android.mybakingapp.Network.RetrofitBuilder;
 import com.example.android.mybakingapp.R;
+import com.example.android.mybakingapp.Widget.MyBakingAppWidget;
+import com.example.android.mybakingapp.Widget.WidgetService;
+import com.google.gson.Gson;
 
 
 import java.util.ArrayList;
@@ -29,6 +36,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.internal.cache.DiskLruCache;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +46,8 @@ public class RecipeFragment extends Fragment {
 
     private static Retrofit retrofit = null;
     private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
+    private static final String SHARED_RECIPE = "shared_recipe";
+    private static final String SHARED_POSITION = "shared_position";
 
     private ArrayList<RecipeList> mRecipeLists;
 
@@ -68,9 +78,19 @@ public class RecipeFragment extends Fragment {
             public void onClick(View view, int position) {
 
 
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(SHARED_POSITION,position);
+                editor.commit();
 
 
-                List<Ingredient> ıngredients = mRecipeLists.get(position).getIngredients();
+
+
+                int[] ids = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), MyBakingAppWidget.class));
+                MyBakingAppWidget myWidget = new MyBakingAppWidget();
+                myWidget.onUpdate(getContext(), AppWidgetManager.getInstance(getContext()),ids);
+
+
 
 
                 Bundle bundle = new Bundle();
@@ -103,6 +123,16 @@ public class RecipeFragment extends Fragment {
 
                     RecipeAdapter listAdapter = new RecipeAdapter(getContext(), mRecipeLists, listener);
                     recyclerView.setAdapter(listAdapter);
+
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+
+                    String json  = gson.toJson(mRecipeLists);
+                    editor.putString(SHARED_RECIPE, json);
+                    editor.commit();
+
 
 
                 }

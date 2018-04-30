@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_widget_ingName"
+        android:textSize="16sp"
+        android:text="Run the Application"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        />
+
+
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_view_widget"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        >
+    </ListView>
+
+
+
+</LinearLayout>
