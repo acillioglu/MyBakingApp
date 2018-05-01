@@ -39,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class RecipeDynamicFragment extends Fragment {
 
@@ -53,11 +54,15 @@ public class RecipeDynamicFragment extends Fragment {
     private String thumbnailURL;
     private Uri mMediaUri;
     private boolean isLandscape = false;
-    private long playerCurrentPosition = 0;
-    private boolean playerStopped = false;
-    private long playerStopPosition;
 
     private int position = 0;
+
+    private static long mCurrentPlayerPosition;
+
+    private Unbinder unbinder;
+
+    private int denemePosition;
+
 
 
     @Nullable
@@ -72,6 +77,7 @@ public class RecipeDynamicFragment extends Fragment {
 
         if (recipeLists.get(0).getSteps().get(position).getId() > 0) {
             if (mExoPlayer != null) {
+
                 mExoPlayer.stop();
             }
             MyButtonClick myButtonClick = (MyButtonClick) getActivity();
@@ -85,6 +91,7 @@ public class RecipeDynamicFragment extends Fragment {
 
         if (recipeLists.get(0).getSteps().get(position).getId() < recipeLists.get(0).getSteps().size() - 1) {
             if (mExoPlayer != null) {
+
                 mExoPlayer.stop();
             }
 
@@ -106,14 +113,20 @@ public class RecipeDynamicFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_dynamic, container, false);
 
-        ButterKnife.bind(this, rootView);
+       // ButterKnife.bind(this, rootView);
+
+        unbinder = ButterKnife.bind(this,rootView);
 
 
         if (savedInstanceState != null) {
 
-            playerCurrentPosition = savedInstanceState.getLong(SIS_PLAYER_POSITION);
+            mCurrentPlayerPosition = savedInstanceState.getLong(SIS_PLAYER_POSITION);
+            denemePosition = savedInstanceState.getInt("sallama");
+
 
         }
+
+
 
 
         checkLandscape();
@@ -121,6 +134,16 @@ public class RecipeDynamicFragment extends Fragment {
 
         recipeLists = getArguments().getParcelableArrayList(BUNDLE_KEY_SECOND_RECIPE);
         position = getArguments().getInt(BUNDLE_KEY_POSITION);
+
+
+        if (denemePosition != position) {
+          //  denemePosition = position;
+            mCurrentPlayerPosition = 0;
+        }
+
+
+
+
 
 
         shortDescription = recipeLists.get(0).getSteps().get(position).getShortDescription();
@@ -158,10 +181,8 @@ public class RecipeDynamicFragment extends Fragment {
                 mExoPlayer.prepare(mediaSource);
 
 
-                if (playerCurrentPosition != 0 && !playerStopped) {
-                    mExoPlayer.seekTo(playerCurrentPosition);
-                } else {
-                    mExoPlayer.seekTo(playerStopPosition);
+                if (mCurrentPlayerPosition != C.POSITION_UNSET) {
+                    mExoPlayer.seekTo(mCurrentPlayerPosition);
                 }
 
                 mExoPlayer.setPlayWhenReady(true);
@@ -206,12 +227,7 @@ public class RecipeDynamicFragment extends Fragment {
     }
 
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
 
-        outState.putLong(SIS_PLAYER_POSITION, mExoPlayer.getCurrentPosition());
-    }
 
 
     private void expandVideoView(SimpleExoPlayerView exoPlayer) {
@@ -234,18 +250,25 @@ public class RecipeDynamicFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        initializePlayer(mMediaUri);
+      //  initializePlayer(mMediaUri);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
+
+        releasePlayer();
+
+        /*
         if (mExoPlayer != null) {
             playerStopPosition = mExoPlayer.getCurrentPosition();
             playerStopped = true;
             releasePlayer();
 
         }
+
+        */
     }
 
 
@@ -254,6 +277,7 @@ public class RecipeDynamicFragment extends Fragment {
         super.onDestroyView();
 
         releasePlayer();
+        unbinder.unbind();
     }
 
 
@@ -261,29 +285,36 @@ public class RecipeDynamicFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+
+
+        if (mExoPlayer != null) {
+            mCurrentPlayerPosition = mExoPlayer.getCurrentPosition();
+
+        }
+
+
+
+
+
+        /*
         if (mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
         }
-
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        if (mExoPlayer != null) {
-            mExoPlayer.stop();
-            mExoPlayer.release();
-        }
-
+*/
 
     }
+
+
 
     @Override
     public void onResume() {
         super.onResume();
+
+
+
+
+        /*
 
         if (videoUrl != null && !videoUrl.isEmpty()) {
 
@@ -294,12 +325,23 @@ public class RecipeDynamicFragment extends Fragment {
             }
 
         }
-
+*/
     }
 
 
     interface MyButtonClick {
         public void onItemClick(int position);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.v("OnSaveInstance", "" + mCurrentPlayerPosition);
+        Log.v("OnSaveInstance", "" + position);
+
+        outState.putLong(SIS_PLAYER_POSITION, mCurrentPlayerPosition);
+        outState.putInt("sallama", position);
     }
 
 
