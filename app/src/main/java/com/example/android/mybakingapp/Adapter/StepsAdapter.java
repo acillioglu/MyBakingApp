@@ -6,18 +6,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.mybakingapp.Model.Step;
 import com.example.android.mybakingapp.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class StepsAdapter extends RecyclerView.Adapter{
+
+public class StepsAdapter extends RecyclerView.Adapter {
 
     private Context context;
-
 
 
     private ArrayList<Step> stepArrayList;
@@ -40,7 +46,6 @@ public class StepsAdapter extends RecyclerView.Adapter{
     }
 
 
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,6 +60,7 @@ public class StepsAdapter extends RecyclerView.Adapter{
 
         ((ListViewHolder) holder).bindView(position);
 
+
     }
 
     @Override
@@ -62,12 +68,12 @@ public class StepsAdapter extends RecyclerView.Adapter{
         return stepArrayList.size();
     }
 
-    private class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-
-        private TextView mShortDesTextView;
-
-
+        @BindView(R.id.txt_step_shortDes)
+        TextView mShortDesTextView;
+        @BindView(R.id.imv_step_thumbnail)
+        ImageView mThumbnailImageView;
 
 
        /* private TextView mShortDesTextView;
@@ -78,8 +84,7 @@ public class StepsAdapter extends RecyclerView.Adapter{
         public ListViewHolder(View itemView, StepsAdapterListener listener) {
             super(itemView);
 
-            mShortDesTextView = (TextView) itemView.findViewById(R.id.txt_step_shortDes);
-
+            ButterKnife.bind(this, itemView);
 
             mListener = listener;
             itemView.setOnClickListener(this);
@@ -90,13 +95,36 @@ public class StepsAdapter extends RecyclerView.Adapter{
         public void bindView(int position) {
 
             String shortDescription = stepArrayList.get(position).getShortDescription();
+            String thumbnailUrl = stepArrayList.get(position).getThumbnailURL();
 
-        mShortDesTextView.setText(position + " . " + shortDescription);
+            mShortDesTextView.setText(position + " . " + shortDescription);
+
+
+            if (!thumbnailUrl.isEmpty()) {
+                Picasso.get()
+                        .load(thumbnailUrl)
+                        .error(R.drawable.img_novide)
+                        .into(mThumbnailImageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                                mThumbnailImageView.setVisibility(View.GONE);
+
+                            }
+                        });
+
+
+            } else {
+                mThumbnailImageView.setVisibility(View.GONE);
+            }
+
 
         }
-
-
-
 
 
         @Override
@@ -104,7 +132,7 @@ public class StepsAdapter extends RecyclerView.Adapter{
 
             int pos = getAdapterPosition();
 
-            if (pos != RecyclerView.NO_POSITION){
+            if (pos != RecyclerView.NO_POSITION) {
 
                 mListener.onClick(view, pos);
 
@@ -114,19 +142,6 @@ public class StepsAdapter extends RecyclerView.Adapter{
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

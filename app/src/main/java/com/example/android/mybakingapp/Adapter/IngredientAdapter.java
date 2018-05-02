@@ -14,7 +14,10 @@ import com.example.android.mybakingapp.R;
 
 import java.util.ArrayList;
 
-public class IngredientAdapter extends RecyclerView.Adapter{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class IngredientAdapter extends RecyclerView.Adapter {
 
     private Context context;
 
@@ -31,7 +34,7 @@ public class IngredientAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ingredients_list, parent, false);
-        return  new ListViewHolder(view);
+        return new ListViewHolder(view);
     }
 
     @Override
@@ -47,18 +50,16 @@ public class IngredientAdapter extends RecyclerView.Adapter{
         return ıngredients.size();
     }
 
-    private class ListViewHolder extends RecyclerView.ViewHolder {
+    public class ListViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mIngredientsTextView;
-
-
+        @BindView(R.id.txt_ingredients)
+        TextView mIngredientsTextView;
 
 
         public ListViewHolder(View itemView) {
             super(itemView);
 
-            mIngredientsTextView = (TextView) itemView.findViewById(R.id.txt_ingredients);
-
+            ButterKnife.bind(this, itemView);
 
 
         }
@@ -69,13 +70,11 @@ public class IngredientAdapter extends RecyclerView.Adapter{
             String mMeasure = ıngredients.get(position).getMeasure();
             Double mQuantity = ıngredients.get(position).getQuantity();
 
-            mIngredientsTextView.setText("• " + mIngredient +" (" + String.valueOf(mQuantity) + mMeasure + ")");
+            mIngredientsTextView.setText("• " + mIngredient + " (" + String.valueOf(mQuantity) + mMeasure + ")");
 
 
         }
     }
-
-
 
 
 }

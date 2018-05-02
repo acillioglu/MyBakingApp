@@ -9,18 +9,18 @@
         android:id="@+id/txt_widget_ing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"/>
+        android:textSize="@dimen/text_sz_medium"/>
 
     <TextView
         android:id="@+id/txt_widget_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"/>
+        android:textSize="@dimen/text_sz_medium"/>
 
     <TextView
         android:id="@+id/txt_widget_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"/>
+        android:textSize="@dimen/text_sz_medium"/>
 
 </LinearLayout>

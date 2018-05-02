@@ -39,6 +39,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     private static final String BUNDLE_KEY_POSITION = "bundle_key_position";
     private static final String BUNDLE_KEY_SECOND_RECIPE = "bundle_key_second_recipe";
 
+    FragmentManager fragmentManager;
+
 
 
     @BindView(R.id.toolbar_general)
@@ -77,8 +79,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
 
         RecipeDetailMasterFragment recipeDetailMasterFragment = new RecipeDetailMasterFragment();
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
+        // final FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         recipeDetailMasterFragment.setArguments(bundle);
 
@@ -182,6 +184,26 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         outState.putInt(SIS_POSITION, mPosition);
         outState.putBoolean(SIS_IS_DYNAMIC, isDynamic);
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        if (mFragmentManager.getBackStackEntryCount() > 0) {
+
+            fragmentManager.popBackStack("recipe_detail",0);
+
+        //  finish();
+
+        } else{
+
+            finish();
+
+        }
 
 
     }

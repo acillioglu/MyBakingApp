@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Model.Step;
@@ -75,21 +76,32 @@ public class RecipeDynamicFragment extends Fragment {
     @OnClick(R.id.btn_prev)
     public void prevButton() {
 
-        if (recipeLists.get(0).getSteps().get(position).getId() > 0) {
+        int currentStep = recipeLists.get(0).getSteps().get(position).getId();
+
+
+        if (currentStep > 0) {
             if (mExoPlayer != null) {
 
                 mExoPlayer.stop();
             }
             MyButtonClick myButtonClick = (MyButtonClick) getActivity();
             myButtonClick.onItemClick(position - 1);
+        } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.info_firststep), Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
 
     @OnClick(R.id.btn_next)
     public void nextButton() {
 
-        if (recipeLists.get(0).getSteps().get(position).getId() < recipeLists.get(0).getSteps().size() - 1) {
+        int currentStep = recipeLists.get(0).getSteps().get(position).getId();
+        int lastStep = recipeLists.get(0).getSteps().size();
+
+
+        if (currentStep < lastStep - 1) {
             if (mExoPlayer != null) {
 
                 mExoPlayer.stop();
@@ -98,7 +110,8 @@ public class RecipeDynamicFragment extends Fragment {
             MyButtonClick myItemClick = (MyButtonClick) getActivity();
             myItemClick.onItemClick(position + 1);
 
-
+        } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.info_laststep), Toast.LENGTH_SHORT).show();
         }
     }
 

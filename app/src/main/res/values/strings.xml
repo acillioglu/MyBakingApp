@@ -2,4 +2,26 @@
     <string name="app_name">MyBakingApp</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+
+
+
+    <!-- Recipe Fragment-->
+
+    <string name="main_str_interneterror">No Internet Connection</string>
+    <string name="main_str_tryagain">TRY AGAIN</string>
+
+
+
+    <string name="layout_widget_firstapp">Launch the BakingApp</string>
+
+    <string name="info_firststep">You are already first step.</string>
+    <string name="info_laststep">You are already last step.</string>
+
+
+
+
+
+
+
 </resources>

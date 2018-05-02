@@ -2,13 +2,17 @@ package com.example.android.mybakingapp.ui;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +34,7 @@ import com.example.android.mybakingapp.Widget.WidgetService;
 import com.google.gson.Gson;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +147,11 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<RecipeList>> call, Throwable t) {
 
-                Log.v("onfailure", String.valueOf(t));
+                if (t instanceof IOException) {
+                    showSnackbar(recyclerView, getResources().getString(R.string.main_str_interneterror), Snackbar.LENGTH_INDEFINITE);
+                }
+
+
 
             }
         });
@@ -154,6 +163,36 @@ public class RecipeFragment extends Fragment {
         return rootView;
 
     }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
+    }
+
+    public void showSnackbar(View view, String message, int duration) {
+
+
+        final Snackbar snackbar = Snackbar.make(view, message, duration);
+
+        snackbar.setAction(getResources().getString(R.string.main_str_tryagain), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOnline() != true) {
+                    showSnackbar(recyclerView, getResources().getString(R.string.main_str_interneterror), Snackbar.LENGTH_INDEFINITE);
+
+                } else {
+                    snackbar.dismiss();
+                }
+
+            }
+        });
+
+        snackbar.show();
+    }
+
+
 
 
 
