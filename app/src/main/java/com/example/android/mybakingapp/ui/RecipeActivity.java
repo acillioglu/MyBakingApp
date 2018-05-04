@@ -26,7 +26,7 @@ public class RecipeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("My Baking App");
+        getSupportActionBar().setTitle(R.string.app_nameSpace);
 
 
     }

@@ -19,6 +19,7 @@
     <string name="info_laststep">You are already last step.</string>
     <string name="textIng">Ingredients</string>
     <string name="textSteps">Steps</string>
+    <string name="app_nameSpace">My Baking App</string>
 
 
 </resources>
