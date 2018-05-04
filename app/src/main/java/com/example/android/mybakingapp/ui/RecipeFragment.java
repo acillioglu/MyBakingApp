@@ -8,40 +8,30 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 
 import com.example.android.mybakingapp.Adapter.RecipeAdapter;
-import com.example.android.mybakingapp.Model.Ingredient;
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Network.BakingApi;
 import com.example.android.mybakingapp.Network.RetrofitBuilder;
 import com.example.android.mybakingapp.R;
 import com.example.android.mybakingapp.Widget.MyBakingAppWidget;
-import com.example.android.mybakingapp.Widget.WidgetService;
 import com.google.gson.Gson;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.internal.cache.DiskLruCache;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +40,7 @@ import retrofit2.Retrofit;
 public class RecipeFragment extends Fragment {
 
     private static Retrofit retrofit = null;
+    private boolean isTablet = false;
     private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
     private static final String SHARED_RECIPE = "shared_recipe";
     private static final String SHARED_POSITION = "shared_position";
@@ -75,7 +66,19 @@ public class RecipeFragment extends Fragment {
 
         ButterKnife.bind(this,rootView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
+
+
+        if (isTablet == true) {
+
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }else{
+
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            }
+
+
+
 
 
         final RecipeAdapter.RecipeAdapterListener listener = new RecipeAdapter.RecipeAdapterListener() {

@@ -6,10 +6,11 @@
 
 
     <TextView
-        android:paddingLeft="5dp"
+        android:paddingLeft="@dimen/padding_small"
         android:id="@+id/txt_ingredients"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
 
 

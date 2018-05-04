@@ -70,6 +70,8 @@ public class RecipeAdapter extends RecyclerView.Adapter {
         TextView mItemTextView;
         @BindView(R.id.imv_recipe_image)
         ImageView mItemImage;
+        @BindView(R.id.txt_servings)
+        TextView mItemServings;
 
 
         public ListviewHolder(View itemView, RecipeAdapterListener listener) {
@@ -97,6 +99,7 @@ public class RecipeAdapter extends RecyclerView.Adapter {
             }
 
 
+            mItemServings.setText("Servings : " + recipeLists.get(position).getServings());
             mItemTextView.setText(recipeLists.get(position).getName());
 
 

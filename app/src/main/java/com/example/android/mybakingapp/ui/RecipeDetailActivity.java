@@ -1,30 +1,23 @@
 package com.example.android.mybakingapp.ui;
 
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.android.mybakingapp.Adapter.StepsAdapter;
 import com.example.android.mybakingapp.Model.RecipeList;
-import com.example.android.mybakingapp.Model.Step;
 import com.example.android.mybakingapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailMasterFragment.MyItemClick, RecipeDynamicFragment.MyButtonClick {
 
-    private List<Step> steps;
     List<RecipeList> recipeLists;
     private boolean mTwoPane;
     private int mPosition;
@@ -34,19 +27,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     private static final String SIS_POSITION = "sis_position";
     private static final String SIS_IS_DYNAMIC = "sis_is_dynamic";
 
-    private final String TAG = getClass().getSimpleName();
     private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
     private static final String BUNDLE_KEY_POSITION = "bundle_key_position";
     private static final String BUNDLE_KEY_SECOND_RECIPE = "bundle_key_second_recipe";
 
-    FragmentManager fragmentManager;
+    private static final String STACK_RECIPE_DETAIL = "stack_recipe detail";
+    private static final String STACK_STEP_DETAIL = "stack_step_detail";
 
+    FragmentManager fragmentManager;
 
 
     @BindView(R.id.toolbar_general)
     Toolbar toolbar;
-
-
 
 
     @Override
@@ -75,18 +67,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         }
 
-        steps = recipeLists.get(0).getSteps();
-
 
         RecipeDetailMasterFragment recipeDetailMasterFragment = new RecipeDetailMasterFragment();
-        // final FragmentManager fragmentManager = getSupportFragmentManager();
+
         fragmentManager = getSupportFragmentManager();
 
         recipeDetailMasterFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
                 .replace(R.id.container_detail_fragment, recipeDetailMasterFragment)
-                .addToBackStack("recipe_detail")
+                .addToBackStack(STACK_RECIPE_DETAIL)
                 .commit();
 
 
@@ -117,15 +107,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                 FragmentManager mFragmentManager = getSupportFragmentManager();
                 if (mFragmentManager.getBackStackEntryCount() > 1) {
 
-                    fragmentManager.popBackStack("recipe_detail",0);
+                    fragmentManager.popBackStack(STACK_RECIPE_DETAIL, 0);
 
-                } else if (fragmentManager.getBackStackEntryCount() > 0) {
+
+                } else {
                     finish();
                 }
             }
         });
-
-
 
 
     }
@@ -164,7 +153,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container_detail_fragment, recipeDynamicFragment)
-                    .addToBackStack("step_detail")
+                    .addToBackStack(STACK_STEP_DETAIL)
                     .commit();
 
 
@@ -172,7 +161,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         mPosition = position;
         isDynamic = true;
-
 
 
     }
@@ -195,11 +183,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         FragmentManager mFragmentManager = getSupportFragmentManager();
         if (mFragmentManager.getBackStackEntryCount() > 0) {
 
-            fragmentManager.popBackStack("recipe_detail",0);
+            fragmentManager.popBackStack(STACK_RECIPE_DETAIL, 0);
 
-        //  finish();
 
-        } else{
+        } else {
 
             finish();
 

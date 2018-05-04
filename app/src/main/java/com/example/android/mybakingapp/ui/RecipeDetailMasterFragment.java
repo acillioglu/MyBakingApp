@@ -1,32 +1,24 @@
 package com.example.android.mybakingapp.ui;
 
 
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 
 import com.example.android.mybakingapp.Adapter.IngredientAdapter;
-import com.example.android.mybakingapp.Adapter.RecipeAdapter;
 import com.example.android.mybakingapp.Adapter.StepsAdapter;
 import com.example.android.mybakingapp.Model.Ingredient;
 import com.example.android.mybakingapp.Model.RecipeList;
 import com.example.android.mybakingapp.Model.Step;
 import com.example.android.mybakingapp.R;
 
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,9 +40,8 @@ public class RecipeDetailMasterFragment extends Fragment {
 
     interface MyItemClick {
 
-        public void onItemClick(int position);
+        void onItemClick(int position);
     }
-
 
 
     @Nullable
@@ -59,7 +50,7 @@ public class RecipeDetailMasterFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail_master, container, false);
 
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
 
 
         recipeLists = getArguments().getParcelableArrayList(BUNDLE_KEY_RECIPE);
@@ -86,22 +77,16 @@ public class RecipeDetailMasterFragment extends Fragment {
         };
 
 
-
         recyclerIng.setNestedScrollingEnabled(false);
         recyclerIng.setLayoutManager(new LinearLayoutManager(getContext()));
         IngredientAdapter ıngredientAdapter = new IngredientAdapter(getContext(), ıngredients);
         recyclerIng.setAdapter(ıngredientAdapter);
 
 
-
         recyclerStepsShortDes.setNestedScrollingEnabled(false);
         recyclerStepsShortDes.setLayoutManager(new LinearLayoutManager(getContext()));
         StepsAdapter stepsAdapter = new StepsAdapter(getContext(), steps, listener);
         recyclerStepsShortDes.setAdapter(stepsAdapter);
-
-
-
-
 
 
         return rootView;

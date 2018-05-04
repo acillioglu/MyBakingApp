@@ -20,7 +20,7 @@
         android:id="@+id/list_view_widget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/padding_medium"
+        android:paddingLeft="@dimen/padding_small"
         android:paddingTop="@dimen/padding_small"></ListView>
 
 

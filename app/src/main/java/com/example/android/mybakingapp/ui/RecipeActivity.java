@@ -1,8 +1,8 @@
 package com.example.android.mybakingapp.ui;
 
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.example.android.mybakingapp.R;
@@ -14,10 +14,6 @@ public class RecipeActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_general)
     Toolbar toolbar;
-
-
-
-
 
 
     @Override
@@ -33,7 +29,7 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Baking App");
 
 
-
-
     }
+
+
 }

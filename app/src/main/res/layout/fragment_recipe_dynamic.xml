@@ -9,8 +9,8 @@
         android:id="@+id/simple_exoplayer_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:layout_margin="8dp">
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_weight="3">
 
     </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
@@ -18,29 +18,33 @@
         android:id="@+id/txt_description"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_margin="8dp"/>
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_weight="2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.7">
 
         <Button
             android:id="@+id/btn_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Previous"/>
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@color/colorAccent"
+            android:text="Previous"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@color/colorAccent"
             android:text="Next"
-            android:layout_alignParentRight="true"/>
+            android:textColor="@android:color/white" />
     </RelativeLayout>
-
-
 
 
 </LinearLayout>
