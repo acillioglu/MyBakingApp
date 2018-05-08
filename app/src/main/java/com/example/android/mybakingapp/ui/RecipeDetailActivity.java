@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.android.mybakingapp.Model.RecipeList;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailMasterFragment.MyItemClick, RecipeDynamicFragment.MyButtonClick {
 
     List<RecipeList> recipeLists;
-    private boolean mTwoPane;
+    private boolean mTwoPane = false;
     private int mPosition;
 
     private boolean isDynamic = false;
@@ -48,14 +49,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         ButterKnife.bind(this);
 
-
-        if (findViewById(R.id.sw600_linear_layout) != null) {
-            mTwoPane = true;
-
-        } else {
-            mTwoPane = false;
-
-        }
+        mTwoPane = getResources().getBoolean(R.bool.is_tablet);
 
 
         Bundle bundle = getIntent().getExtras();
@@ -68,16 +62,21 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         }
 
 
-        RecipeDetailMasterFragment recipeDetailMasterFragment = new RecipeDetailMasterFragment();
+        if (savedInstanceState == null) {
 
-        fragmentManager = getSupportFragmentManager();
+            RecipeDetailMasterFragment recipeDetailMasterFragment = new RecipeDetailMasterFragment();
 
-        recipeDetailMasterFragment.setArguments(bundle);
+            fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.container_detail_fragment, recipeDetailMasterFragment)
-                .addToBackStack(STACK_RECIPE_DETAIL)
-                .commit();
+            recipeDetailMasterFragment.setArguments(bundle);
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container_detail_fragment, recipeDetailMasterFragment)
+                //    .addToBackStack(STACK_RECIPE_DETAIL)
+                  //  .commitAllowingStateLoss();
+                    .commit();
+
+        }
 
 
         if (savedInstanceState != null) {
@@ -104,15 +103,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager mFragmentManager = getSupportFragmentManager();
-                if (mFragmentManager.getBackStackEntryCount() > 1) {
 
-                    fragmentManager.popBackStack(STACK_RECIPE_DETAIL, 0);
+                onBackPressed();
 
-
-                } else {
-                    finish();
-                }
             }
         });
 
@@ -144,17 +137,21 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container_dynamic_fragment, recipeDynamicFragment)
-
                     .commit();
 
 
         } else {
 
 
+
             fragmentManager.beginTransaction()
                     .replace(R.id.container_detail_fragment, recipeDynamicFragment)
-                    .addToBackStack(STACK_STEP_DETAIL)
-                    .commit();
+
+
+                  //  .addToBackStack(null)
+                //  .commitAllowingStateLoss();
+                   .commit();
+
 
 
         }
@@ -176,22 +173,32 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        FragmentManager mFragmentManager = getSupportFragmentManager();
-        if (mFragmentManager.getBackStackEntryCount() > 0) {
 
-            fragmentManager.popBackStack(STACK_RECIPE_DETAIL, 0);
+        FragmentManager fm = getSupportFragmentManager();
 
+        if (findViewById(R.id.container_dynamic_fragment) == null) {
+
+            Log.d("stacksayisi :", String.valueOf(fm.getBackStackEntryCount()));
+
+
+            if (fm.getBackStackEntryCount() >= 1) {
+                Log.d("stacksayisi", "1 den büyük");
+
+                fm.popBackStack(STACK_RECIPE_DETAIL, 0);
+            } else {
+                finish();
+            }
 
         } else {
-
             finish();
-
         }
 
-
     }
+
+
 }

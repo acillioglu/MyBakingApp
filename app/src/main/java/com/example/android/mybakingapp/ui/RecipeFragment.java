@@ -89,7 +89,7 @@ public class RecipeFragment extends Fragment {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(SHARED_POSITION,position);
-                editor.commit();
+                editor.apply();
 
 
 
@@ -139,7 +139,7 @@ public class RecipeFragment extends Fragment {
 
                     String json  = gson.toJson(mRecipeLists);
                     editor.putString(SHARED_RECIPE, json);
-                    editor.commit();
+                    editor.apply();
 
 
 
