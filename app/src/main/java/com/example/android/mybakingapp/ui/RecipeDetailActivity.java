@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.example.android.mybakingapp.Model.RecipeList;
@@ -19,28 +18,19 @@ import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailMasterFragment.MyItemClick, RecipeDynamicFragment.MyButtonClick {
 
-    List<RecipeList> recipeLists;
-    private boolean mTwoPane = false;
-    private int mPosition;
-
-    private boolean isDynamic = false;
-
     private static final String SIS_POSITION = "sis_position";
     private static final String SIS_IS_DYNAMIC = "sis_is_dynamic";
-
     private static final String BUNDLE_KEY_RECIPE = "bundle_key_recipe";
     private static final String BUNDLE_KEY_POSITION = "bundle_key_position";
     private static final String BUNDLE_KEY_SECOND_RECIPE = "bundle_key_second_recipe";
-
     private static final String STACK_RECIPE_DETAIL = "stack_recipe detail";
-    private static final String STACK_STEP_DETAIL = "stack_step_detail";
-
+    List<RecipeList> recipeLists;
     FragmentManager fragmentManager;
-
-
     @BindView(R.id.toolbar_general)
     Toolbar toolbar;
-
+    private boolean mTwoPane = false;
+    private int mPosition;
+    private boolean isDynamic = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +62,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container_detail_fragment, recipeDetailMasterFragment)
-                //    .addToBackStack(STACK_RECIPE_DETAIL)
-                  //  .commitAllowingStateLoss();
+                    .addToBackStack(STACK_RECIPE_DETAIL)
                     .commit();
 
         }
@@ -87,7 +76,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             if (isDynamic == true) {
 
                 onItemClick(mPosition);
-
 
             }
 
@@ -128,33 +116,24 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         bundleIng.putParcelableArrayList(BUNDLE_KEY_SECOND_RECIPE, secondRecipe);
         bundleIng.putInt(BUNDLE_KEY_POSITION, position);
 
-
         recipeDynamicFragment.setArguments(bundleIng);
 
 
         if (mTwoPane == true) {
 
-
             fragmentManager.beginTransaction()
                     .replace(R.id.container_dynamic_fragment, recipeDynamicFragment)
                     .commit();
-
-
         } else {
-
-
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container_detail_fragment, recipeDynamicFragment)
-
-
-                  //  .addToBackStack(null)
-                //  .commitAllowingStateLoss();
-                   .commit();
-
-
-
+                    .addToBackStack(null)
+                    .commit();
         }
+
+        RecipeDynamicFragment.mCurrentPlayerPosition = 0;
+        RecipeDynamicFragment.playWhenReady = true;
 
         mPosition = position;
         isDynamic = true;
@@ -166,10 +145,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-
         outState.putInt(SIS_POSITION, mPosition);
         outState.putBoolean(SIS_IS_DYNAMIC, isDynamic);
-
 
     }
 
@@ -183,11 +160,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         if (findViewById(R.id.container_dynamic_fragment) == null) {
 
-            Log.d("stacksayisi :", String.valueOf(fm.getBackStackEntryCount()));
-
-
             if (fm.getBackStackEntryCount() >= 1) {
-                Log.d("stacksayisi", "1 den büyük");
 
                 fm.popBackStack(STACK_RECIPE_DETAIL, 0);
             } else {

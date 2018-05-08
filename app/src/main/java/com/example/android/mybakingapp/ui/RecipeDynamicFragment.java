@@ -41,10 +41,12 @@ import butterknife.Unbinder;
 public class RecipeDynamicFragment extends Fragment {
 
     private static final String SIS_PLAYER_POSITION = "sis_current_position";
-    private static final String SIS_DENEME_POSITION = "sis_denemeposition";
     private static final String SIS_PLAY_WHEN_READY = "sis_playwhenready";
     private static final String BUNDLE_KEY_POSITION = "bundle_key_position";
     private static final String BUNDLE_KEY_SECOND_RECIPE = "bundle_key_second_recipe";
+    public static long mCurrentPlayerPosition;
+    public static boolean playWhenReady = true;
+    private static int statePosition;
     @Nullable
     @BindView(R.id.simple_exoplayer_view)
     SimpleExoPlayerView mPlayerView;
@@ -62,8 +64,6 @@ public class RecipeDynamicFragment extends Fragment {
     private Uri mMediaUri;
     private boolean isLandscape = false;
     private int position = 0;
-    private long mCurrentPlayerPosition;
-    private boolean playWhenReady = true;
     private Unbinder unbinder;
 
 
@@ -79,20 +79,21 @@ public class RecipeDynamicFragment extends Fragment {
 
         if (currentStep > 0) {
             if (mExoPlayer != null) {
+
+                mCurrentPlayerPosition = 0;
+                playWhenReady = true;
                 mExoPlayer.stop();
 
 
             }
             MyButtonClick myButtonClick = (MyButtonClick) getActivity();
             myButtonClick.onItemClick(position - 1);
+
         } else {
 
             Snackbar snackbar = Snackbar
                     .make(linearLayout, getResources().getString(R.string.info_firststep), Snackbar.LENGTH_LONG);
-
             snackbar.show();
-
-
         }
 
 
@@ -109,9 +110,9 @@ public class RecipeDynamicFragment extends Fragment {
         if (currentStep < lastStep - 1) {
             if (mExoPlayer != null) {
 
-
+                mCurrentPlayerPosition = 0;
+                playWhenReady = true;
                 mExoPlayer.stop();
-
 
             }
 
@@ -135,14 +136,7 @@ public class RecipeDynamicFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_dynamic, container, false);
 
-
         unbinder = ButterKnife.bind(this, rootView);
-
-
-        if (savedInstanceState != null) {
-            mCurrentPlayerPosition = savedInstanceState.getLong(SIS_PLAYER_POSITION);
-            playWhenReady = savedInstanceState.getBoolean(SIS_PLAY_WHEN_READY);
-        }
 
         checkLandscape();
 
@@ -161,12 +155,10 @@ public class RecipeDynamicFragment extends Fragment {
             textView.setText(description);
         }
 
-
         return rootView;
     }
 
     private void initializePlayer() {
-
 
         if (mExoPlayer == null) {
 
@@ -184,7 +176,7 @@ public class RecipeDynamicFragment extends Fragment {
                     mExoPlayer.prepare(mediaSource);
 
 
-                    if (mCurrentPlayerPosition != C.POSITION_UNSET) {
+                    if (mCurrentPlayerPosition != C.POSITION_UNSET && mCurrentPlayerPosition != 0) {
                         mExoPlayer.seekTo(mCurrentPlayerPosition);
                     } else {
                         mExoPlayer.seekTo(0);
@@ -276,6 +268,7 @@ public class RecipeDynamicFragment extends Fragment {
         if (mExoPlayer != null) {
             playWhenReady = mExoPlayer.getPlayWhenReady();
             mCurrentPlayerPosition = mExoPlayer.getCurrentPosition();
+            statePosition = position;
             releasePlayer();
         }
 
@@ -291,6 +284,8 @@ public class RecipeDynamicFragment extends Fragment {
                 releasePlayer();
             }
         }
+
+
     }
 
     @Override
@@ -307,13 +302,33 @@ public class RecipeDynamicFragment extends Fragment {
 
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putLong(SIS_PLAYER_POSITION, mCurrentPlayerPosition);
-        outState.putInt(SIS_DENEME_POSITION, position);
         outState.putBoolean(SIS_PLAY_WHEN_READY, playWhenReady);
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+
+        if (savedInstanceState != null) {
+            mCurrentPlayerPosition = savedInstanceState.getLong(SIS_PLAYER_POSITION);
+            playWhenReady = savedInstanceState.getBoolean(SIS_PLAY_WHEN_READY);
+        }
+
+
+        if (statePosition != position) {
+            mCurrentPlayerPosition = 0;
+            playWhenReady = true;
+        }
+
+
     }
 
 
@@ -321,5 +336,5 @@ public class RecipeDynamicFragment extends Fragment {
         void onItemClick(int position);
     }
 
-
 }
+
