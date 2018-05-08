@@ -142,10 +142,7 @@ public class RecipeDynamicFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentPlayerPosition = savedInstanceState.getLong(SIS_PLAYER_POSITION);
             playWhenReady = savedInstanceState.getBoolean(SIS_PLAY_WHEN_READY);
-
-
         }
-
 
         checkLandscape();
 
@@ -175,7 +172,6 @@ public class RecipeDynamicFragment extends Fragment {
 
             if (videoUrl != null && !videoUrl.isEmpty()) {
                 mMediaUri = Uri.parse(videoUrl);
-
 
                 try {
                     BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -207,7 +203,6 @@ public class RecipeDynamicFragment extends Fragment {
                     expandVideoView(mPlayerView);
                     hideSystemUI();
 
-
                 }
 
 
@@ -232,7 +227,6 @@ public class RecipeDynamicFragment extends Fragment {
 
     public void releasePlayer() {
         if (mExoPlayer != null && mPlayerView != null) {
-
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
@@ -259,7 +253,6 @@ public class RecipeDynamicFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-
         if (Util.SDK_INT > 23) {
 
             initializePlayer();
@@ -270,12 +263,8 @@ public class RecipeDynamicFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
         if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
-
             initializePlayer();
-
-
         }
 
     }
@@ -284,10 +273,7 @@ public class RecipeDynamicFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-
         if (mExoPlayer != null) {
-
-
             playWhenReady = mExoPlayer.getPlayWhenReady();
             mCurrentPlayerPosition = mExoPlayer.getCurrentPosition();
             releasePlayer();
@@ -299,17 +285,11 @@ public class RecipeDynamicFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-
         if (Util.SDK_INT > 23) {
-
-
             if (mExoPlayer != null) {
-
                 playWhenReady = mExoPlayer.getPlayWhenReady();
                 releasePlayer();
             }
-
-
         }
     }
 
@@ -317,14 +297,11 @@ public class RecipeDynamicFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-
         if (mExoPlayer != null) {
-
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
         }
-
 
         unbinder.unbind();
 
@@ -334,13 +311,9 @@ public class RecipeDynamicFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-
         outState.putLong(SIS_PLAYER_POSITION, mCurrentPlayerPosition);
         outState.putInt(SIS_DENEME_POSITION, position);
-
         outState.putBoolean(SIS_PLAY_WHEN_READY, playWhenReady);
-
-
     }
 
 
